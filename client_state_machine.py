@@ -129,8 +129,13 @@ class ClientSM:
             if len(my_msg) > 0:     # my stuff going out
                 #encrpt message
                 global password
-                password = AES_sample.create_password
+                print(1)
+                password = AES_sample.create_password()
+                print(2)
+                # encrypt my message, and then convert it into string in which can be sent to the server
                 my_msg = AES_sample.encrypt_AES(my_msg, password)
+                my_msg = my_msg.decode('cp037')
+                '''#my_msg = bytes.fromhex(my_msg[2:-1].replace('\\x', '')).decode('cp037')'''
                 mysend(self.s, json.dumps({"action":"exchange", "from":"[" + self.me + "]", "message":my_msg}))
                 
                 if my_msg == 'bye':
@@ -144,6 +149,10 @@ class ClientSM:
                 elif peer_msg["action"] == "disconnect":
                     self.state = S_LOGGEDIN
                 else:
+                    #convert peer_message[str] to bytes, then it can be decrpt
+                    #peer_msg = peer_msg.decode('cp037')
+                    peer_msg = json.loads(peer_msg)
+                    peer_msg = peer_msg.encode('cp037')
                     peer_msg = AES_sample.decrypt_AES(peer_msg, password)
                     self.out_msg += peer_msg["from"] + ' ' + peer_msg["message"]
 

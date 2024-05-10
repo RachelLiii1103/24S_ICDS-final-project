@@ -22,7 +22,7 @@ menu = """
 
       ICDS CHAT SYSTEM VER 0.1    
       
-                      by Josiah    
+                      by Rachel    
                                    
 ####################################
 """

@@ -3,9 +3,7 @@ from Crypto.Random import get_random_bytes
 from Crypto.Protocol.KDF import PBKDF2
 import random 
 from chat_utils import *
-import json
-import string
-import secrets
+
 
 def create_password():
     #randomly generate a 16-bits password
@@ -18,8 +16,8 @@ def encrypt_AES(plaintext, password):
     salt = get_random_bytes(16)
     # print(salt)
     # print(type(salt))
-    #key = PBKDF2(password, salt, 16, count=1000)
-    key = password
+    key = PBKDF2(password, salt, 16, count=1000)
+    #key = password
     cipher = AES.new(key, AES.MODE_GCM)
     ciphertext, tag = cipher.encrypt_and_digest(plaintext.encode())
     nc = cipher.nonce
@@ -39,7 +37,7 @@ def decrypt_AES(ciphertext, password):
 # test
 #password = input("Password:")
 
-'''
+
 password = create_password()
 
 print("Password is:",create_password())
@@ -51,7 +49,7 @@ print("Encrypted data:", encrypted_data)
 
 decrypted_data = decrypt_AES(encrypted_data, password)
 print("Decrypted data:", decrypted_data)
-'''
+
 
 
 '''
